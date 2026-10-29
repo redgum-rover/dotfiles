@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "microsoft-learn": {
+      "url": "https://learn.microsoft.com/api/mcp",
+      "autoApprove": [
+        "microsoft_docs_search",
+        "microsoft_docs_fetch"
+      ]
+    },
+    "port-eu-prod": {
+      "url": "https://mcp.port.io/v1",
+      "headers": {
+        "x-read-only-mode": "0"
+      }
+    }
+  }
+}

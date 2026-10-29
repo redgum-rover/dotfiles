@@ -1,0 +1,52 @@
+# This repo tracks CONFIG ONLY. Secrets and machine state must never be committed.
+# The rules below are deliberately aggressive: deny-by-habit for anything that
+# commonly holds credentials, tokens, or regenerated state.
+
+# ---- Secrets: never track ----
+**/.aws/
+**/.ssh/id_*
+**/.ssh/*.pem
+**/.ssh/known_hosts*
+**/.gnupg/
+**/.docker/config.json
+**/.jfrog/
+**/.kube/config
+**/.claude.json
+*.env
+.env
+**/credentials
+**/*secret*
+**/*token*
+**/*.key
+
+# ---- Kiro runtime state: never track (regenerated locally) ----
+home/.kiro/crew/
+home/.kiro/logs/
+home/.kiro/session-index/
+home/.kiro/powers/
+home/.kiro/agents/
+home/.kiro/settings/feed_state.json
+home/.kiro/settings/survey_state.json
+home/.kiro/settings/mcp.lock
+home/.kiro/settings/*.bak
+
+# ---- Shell / tool state & history: never track ----
+*_history
+.*_history
+*.bak
+*.bak-*
+.zcompdump*
+.viminfo
+.lesshst
+.wget-hsts
+.motd_shown
+.sudo_as_admin_successful
+
+# ---- Caches / reinstalled by bootstrap ----
+.cache/
+.npm/
+.nvm/
+.oh-my-zsh/
+.vscode-server/
+.kiro-server/
+.semantic_search/
