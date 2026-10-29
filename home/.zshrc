@@ -147,11 +147,20 @@ alias kiro-cli='kiro-cli chat --trust-all-tools'
 # harmless if npiperelay/socat aren't installed yet (see README).
 if grep -qi microsoft /proc/version 2>/dev/null; then
   export SSH_AUTH_SOCK="$HOME/.1password/agent.sock"
+  # Locate npiperelay.exe: prefer PATH, else fall back to the winget install
+  # path (winget doesn't always add a PATH shim that WSL can see).
+  _npiperelay="$(command -v npiperelay.exe 2>/dev/null)"
+  if [ -z "$_npiperelay" ]; then
+    for _p in /mnt/c/Users/*/AppData/Local/Microsoft/WinGet/Packages/jstarks.npiperelay_*/npiperelay.exe; do
+      [ -x "$_p" ] && { _npiperelay="$_p"; break; }
+    done
+  fi
   if [ ! -S "$SSH_AUTH_SOCK" ] && command -v socat >/dev/null 2>&1 \
-     && command -v npiperelay.exe >/dev/null 2>&1; then
+     && [ -n "$_npiperelay" ]; then
     mkdir -p "$HOME/.1password"
     (setsid socat UNIX-LISTEN:"$SSH_AUTH_SOCK",fork \
-       EXEC:"npiperelay.exe -ei -s //./pipe/openssh-ssh-agent",nofork \
+       EXEC:"$_npiperelay -ei -s //./pipe/openssh-ssh-agent",nofork \
        >/dev/null 2>&1 &)
   fi
+  unset _npiperelay _p
 fi
