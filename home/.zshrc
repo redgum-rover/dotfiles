@@ -138,6 +138,10 @@ alias claude='claude --allow-dangerously-skip-permissions'
 
 alias kiro-cli='kiro-cli chat --trust-all-tools'
 
+# Private, work-scoped helpers (BHP context). Lives outside this public repo
+# under ~/Developer; no-ops on machines that don't have it.
+[ -d "$HOME/Developer/.kiro" ] && export PATH="$HOME/Developer/.kiro:$PATH"
+
 # WSL-only: bridge the Windows 1Password SSH agent into WSL via npiperelay.
 # No-op on native Linux (where ~/.1password/agent.sock is served locally) and
 # harmless if npiperelay/socat aren't installed yet (see README).

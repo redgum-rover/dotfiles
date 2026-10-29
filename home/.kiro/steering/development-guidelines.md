@@ -53,8 +53,8 @@ Regenerate README with terraform-docs and correct stale examples.
 
 ### Pipeline
 
-All Terraform deployments use the reusable pipeline at
-`https://gitlab.com/bhp-cloudfactory/aws-foundations/pipeline`.
+All Terraform deployments use a reusable pipeline template hosted in GitLab
+(the shared `aws-foundations/pipeline` project).
 
 Key characteristics:
 - **AWS auth:** GitLab OIDC → `AssumeRoleWithWebIdentity`. No stored credentials.

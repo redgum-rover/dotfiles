@@ -3,9 +3,9 @@
 Bootstrap a new machine with my developer tools and shell personalisation.
 Targets **Ubuntu/WSL2** and **native Ubuntu Linux** from one repo.
 
-> ⚠️ **Private repo only.** The `home/.kiro/steering/` docs contain
-> BHP-internal context (org structure, account IDs, incident detail). Never
-> push this to a public remote.
+> **Public-safe.** This repo holds generic personalisation and tooling only.
+> Work-specific or internal context (org details, account IDs, etc.) is kept
+> out of here — see "Scoped work context" below — so this repo can be public.
 
 ## Quick start (fresh machine)
 
@@ -21,7 +21,7 @@ Then sign in to tools (interactive, not scripted):
 ```bash
 glab auth login
 gh auth login
-aws-sso-util login -u https://bhp.awsapps.com/start
+aws-sso-util login -u https://<your-org>.awsapps.com/start
 ```
 
 ## What it does
@@ -59,6 +59,29 @@ Tracked files live under `home/` and are **symlinked** into `$HOME`, so editing
 
 Existing real files are moved to `~/.dotfiles-backup-<timestamp>/` before a
 symlink is created.
+
+## Scoped work context (kept out of this repo)
+
+Generic Kiro steering (commit conventions, guardrails) lives in
+`home/.kiro/steering/` and loads **globally** on every machine via
+`~/.kiro/steering`.
+
+Work-specific / internal steering (org structure, account IDs, etc.) is
+**not** in this repo. It lives in a separate private location at
+`~/Developer/.kiro/steering/` and is loaded only when working inside those
+repos. Kiro loads steering from the global dir and the *current* directory's
+`.kiro/steering/` only — it does not walk up the tree — so a small helper
+symlinks the shared docs into a project on demand:
+
+```bash
+bhp-steer            # symlink work steering into $PWD/.kiro/steering/bhp
+bhp-steer --status   # is it linked here?
+bhp-steer --unlink   # remove it
+```
+
+`bhp-steer` lives under `~/Developer/.kiro/` (private, not this repo). `.zshrc`
+adds that dir to `PATH` only if it exists, so this repo stays public-safe and
+no-ops on machines without the private context.
 
 ## Secrets
 
